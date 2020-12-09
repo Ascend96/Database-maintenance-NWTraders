@@ -26,6 +26,7 @@ namespace NorthwindConsole
                     Console.WriteLine("2) Add Category");
                     Console.WriteLine("3) Display Category and related products");
                     Console.WriteLine("4) Display all Categories and their related products");
+                    Console.WriteLine("5) Add New Records to Products");
                     Console.WriteLine("\"q\" to quit");
                     choice = Console.ReadLine();
                     Console.Clear();
@@ -115,6 +116,68 @@ namespace NorthwindConsole
                                 Console.WriteLine($"\t{p.ProductName}");
                             }
                         }
+                    }
+                    else if(choice == "5")
+                    {
+                        Product product = new Product();
+                        Console.WriteLine("Enter Product Name");
+                        product.ProductName = Console.ReadLine();
+                        Console.WriteLine("Enter SupplierID");
+                        product.SupplierId = Int32.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter CategoryID");
+                        product.CategoryId = Int32.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter Quantity Per Unit");
+                        product.QuantityPerUnit = Console.ReadLine();
+                        Console.WriteLine("Enter Price Per Unit");
+                        product.UnitPrice = decimal.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter how many units in stock");
+                        product.UnitsInStock = Int16.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter how many units are on order");
+                        product.UnitsOnOrder = Int16.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter Reorder Level");
+                        product.ReorderLevel = Int16.Parse(Console.ReadLine());
+                        string option;
+                        Console.WriteLine("Enter if the product is discontinued or not (1 = True | 0 = False)");
+                        option = Console.ReadLine();
+                        if(option == "1"){
+                            product.Discontinued = true;
+                        } else if(option == "0"){
+                            product.Discontinued = false;
+                        }
+                        logger.Info($"Product discontinued set to {product.Discontinued}");
+                        
+                        ValidationContext context = new ValidationContext(product, null, null);
+                        List<ValidationResult> results = new List<ValidationResult>();
+
+                        var isValid = Validator.TryValidateObject(product, context, results, true);
+                        if (isValid)
+                        {
+                             var db = new NorthwindConsole_32_MJMContext();
+                            // check for unique product based on supplier and product name
+                            if (db.Products.Any(p => p.ProductName == product.ProductName && p.SupplierId == product.SupplierId))
+                            {
+                                // generate validation error
+                                isValid = false;
+                                results.Add(new ValidationResult("Name exists from that supplier", new string[] { "Product Name, Supplier id" }));
+                            }
+                            else
+                            {
+                                logger.Info("Validation passed");
+                                
+                                db.AddProducts(db, product);
+
+                                logger.Info($"Product: {product.ProductName} has been added");
+                            }
+                        }
+                        if (!isValid)
+                        {
+                            foreach (var result in results)
+                            {
+                                logger.Error($"{result.MemberNames.First()} : {result.ErrorMessage}");
+                            }
+                        }
+
+                        
                     }
                     Console.WriteLine();
 

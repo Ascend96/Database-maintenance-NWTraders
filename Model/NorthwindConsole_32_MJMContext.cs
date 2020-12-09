@@ -40,6 +40,11 @@ namespace NorthwindConsole.Model
                 optionsBuilder.UseSqlServer(@config["NorthwindContext:ConnectionString"]);
             }
         }
+
+        public void AddProducts(NorthwindConsole_32_MJMContext db, Product p){
+            db.Products.Add(p);
+            this.SaveChanges();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>
