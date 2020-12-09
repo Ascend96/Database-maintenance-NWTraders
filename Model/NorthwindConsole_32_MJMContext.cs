@@ -45,6 +45,19 @@ namespace NorthwindConsole.Model
             db.Products.Add(p);
             this.SaveChanges();
         }
+        public void EditProduct(Product updatedProduct){
+            Product product = this.Products.Find(updatedProduct.ProductId);
+            product.ProductName = updatedProduct.ProductName;
+            product.SupplierId = updatedProduct.SupplierId;
+            product.CategoryId = updatedProduct.CategoryId;
+            product.QuantityPerUnit = updatedProduct.QuantityPerUnit;
+            product.UnitPrice = updatedProduct.UnitPrice;
+            product.UnitsInStock = updatedProduct.UnitsInStock;
+            product.UnitsOnOrder = updatedProduct.UnitsOnOrder;
+            product.ReorderLevel = updatedProduct.ReorderLevel;
+            product.Discontinued = updatedProduct.Discontinued;
+            this.SaveChanges();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>
