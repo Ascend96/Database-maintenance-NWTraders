@@ -58,6 +58,10 @@ namespace NorthwindConsole.Model
             product.Discontinued = updatedProduct.Discontinued;
             this.SaveChanges();
         }
+        public void AddCategory(NorthwindConsole_32_MJMContext db, Category c){
+            db.Categories.Add(c);
+            this.SaveChanges();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>

@@ -73,7 +73,9 @@ namespace NorthwindConsole
                             else
                             {
                                 logger.Info("Validation passed");
-                                // TODO: save category to db
+                                // saves category to database
+                                db.AddCategory(db, category);
+                                logger.Info($"{category} added successfully");
                             }
                         }
                         if (!isValid)
@@ -101,7 +103,7 @@ namespace NorthwindConsole
                         logger.Info($"CategoryId {id} selected");
                         Category category = db.Categories.Include("Products").FirstOrDefault(c => c.CategoryId == id);
                         Console.WriteLine($"{category.CategoryName} - {category.Description}");
-                                                foreach (Product p in category.Products)
+                        foreach (Product p in category.Products)
                         {
                             Console.WriteLine(p.ProductName);
                         }
