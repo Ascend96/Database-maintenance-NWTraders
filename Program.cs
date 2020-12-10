@@ -28,6 +28,8 @@ namespace NorthwindConsole
                     Console.WriteLine("4) Display all Categories and their related products");
                     Console.WriteLine("5) Add New Records to Products");
                     Console.WriteLine("6) Edit a specific record from Products");
+                    Console.WriteLine("7) Display all products");
+                    Console.WriteLine("8) Display specific product information");
                     Console.WriteLine("\"q\" to quit");
                     choice = Console.ReadLine();
                     Console.Clear();
@@ -191,6 +193,46 @@ namespace NorthwindConsole
                             } 
                         }
 
+                        
+                    }
+                    else if(choice == "7"){
+                        var db = new NorthwindConsole_32_MJMContext();
+                        Console.WriteLine("1) Display all products");
+                        Console.WriteLine("2) Display all active products");
+                        Console.WriteLine("3) Display all discontinued products");
+                        string option = Console.ReadLine();
+                        if(option == "1"){
+                            var query = db.Products.Where(p => p.Discontinued == false || p.Discontinued == true);
+                        foreach(Product p in query){
+                            if(p.Discontinued == false){
+                                Console.ForegroundColor = ConsoleColor.Green;
+                            }
+                            else{
+                                Console.ForegroundColor = ConsoleColor.Red;
+                            }
+                            Console.WriteLine($"{p.ProductName}");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        logger.Info($"\nDisplaying all products\n");
+                    } else if(option == "2"){
+                        var query = db.Products.Where(p => p.Discontinued == false);
+                        logger.Info($"Option {option} selected");
+                        foreach(Product p in query){                      
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"{p.ProductName}");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        logger.Info($"\nDisplaying active products\n");
+                    } else if(option == "3"){
+                        var query = db.Products.Where(p => p.Discontinued == true);
+                        logger.Info($"Option {option} selected");
+                        foreach(Product p in query){
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"{p.ProductName}");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        logger.Info($"\nDisplaying discontinued products\n");
+                    }
                         
                     }
                     Console.WriteLine();
