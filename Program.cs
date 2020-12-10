@@ -235,6 +235,23 @@ namespace NorthwindConsole
                     }
                         
                     }
+                    else if(choice == "8"){
+                        Console.WriteLine("Enter products ID to view information");
+                        var db = new NorthwindConsole_32_MJMContext();
+                        var product = GetProduct(db);
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine($"\nProduct Id: {product.ProductId}");
+                        Console.WriteLine($"Product name: {product.ProductName}");
+                        Console.WriteLine($"Supplier Id: {product.SupplierId}");
+                        Console.WriteLine($"Category Id: {product.CategoryId}");
+                        Console.WriteLine($"Quantity per unit: {product.QuantityPerUnit}");
+                        Console.WriteLine($"Unit price: {product.UnitPrice}");
+                        Console.WriteLine($"Units in stock: {product.UnitsInStock}");
+                        Console.WriteLine($"Units on order: {product.UnitsOnOrder}");
+                        Console.WriteLine($"Reorder level: {product.ReorderLevel}");
+                        Console.WriteLine($"Discontinued: {product.Discontinued}");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                     Console.WriteLine();
 
                 } while (choice.ToLower() != "q");
