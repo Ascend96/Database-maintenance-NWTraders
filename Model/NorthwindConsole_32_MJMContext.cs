@@ -58,8 +58,22 @@ namespace NorthwindConsole.Model
             product.Discontinued = updatedProduct.Discontinued;
             this.SaveChanges();
         }
+        public void DeleteProduct(Product product){
+            this.Products.Remove(product);
+            this.SaveChanges();
+        }
+        public void EditCategory(Category updatedCategory){
+            Category category = this.Categories.Find(updatedCategory.CategoryId);
+            category.CategoryName = updatedCategory.CategoryName;
+            category.Description = updatedCategory.Description;
+            this.SaveChanges();
+        }
         public void AddCategory(NorthwindConsole_32_MJMContext db, Category c){
             db.Categories.Add(c);
+            this.SaveChanges();
+        }
+        public void DeleteCategory(Category category){
+            this.Categories.Remove(category);
             this.SaveChanges();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
